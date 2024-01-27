@@ -1,23 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>
-    Support System
-  </title>
-  <!-- Favicon -->
-  <link href="<?php echo base_url(); ?>assets/img/brand/favicon.png" rel="icon" type="image/png">
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-  <!-- Icons -->
-  <link href="<?php echo base_url(); ?>assets/js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <!-- CSS Files -->
-  <link href="<?php echo base_url(); ?>assets/css/argon-dashboard.css?v=1.1.2" rel="stylesheet" />
-</head>
-
 <body class="">
 
   <div class="main-content">
@@ -25,7 +5,7 @@
     <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
       <div class="container-fluid">
         <!-- Brand -->
-        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="<?php echo base_url(); ?>index.html">Support System</a>
+        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="<?php echo base_url(); ?>"><?=$judul;?></a>
         <ul class="navbar-nav align-items-center d-none d-md-flex">
         </ul>
       </div>
@@ -137,66 +117,36 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">
-                          AWS
-                        </th>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <span class="mr-2">97%</span>
-                            <div>
-                              <div class="progress">
-                                <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="97" aria-valuemin="0" aria-valuemax="100" style="width: 97%;"></div>
+                      <?php foreach ($skill_counts2 as $skill_count): ?>
+                        <tr>
+                          <th scope="row">
+                            <?=$skill_count->nama_promain;?>
+                          </th>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <span class="mr-2"><?=number_format($skill_count->percentage, 0) . '%';?></span>
+                              <div>
+                                <div class="progress">
+                                  <?php
+$percentage = number_format($skill_count->percentage, 0);
+$class = '';
+if ($percentage < 30) {
+    $class = 'bg-gradient-danger';
+} elseif ($percentage < 60) {
+    $class = 'bg-gradient-warning';
+} elseif ($percentage < 90) {
+    $class = 'bg-gradient-success';
+} else {
+    $class = 'bg-gradient-info';
+}
+?>
+                                  <div class="progress-bar <?=$class;?>" role="progressbar" aria-valuenow="<?=$percentage;?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$percentage . '%';?>;"></div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">
-                          ASO
-                        </th>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <span class="mr-2">98%</span>
-                            <div>
-                              <div class="progress">
-                                <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100" style="width: 98%;"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">
-                          Intranet
-                        </th>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <span class="mr-2">45%</span>
-                            <div>
-                              <div class="progress">
-                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%;"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">
-                          Catalogue
-                        </th>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <span class="mr-2">100%</span>
-                            <div>
-                              <div class="progress">
-                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
+                          </td>
+                        </tr>
+                      <?php endforeach;?>
                       <tr>
                         <th scope="row">
                           ADS
@@ -227,6 +177,51 @@
                           </div>
                         </td>
                       </tr>
+                      <tr>
+                        <th scope="row">
+                          ASO
+                        </th>
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <span class="mr-2">98%</span>
+                            <div>
+                              <div class="progress">
+                                <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100" style="width: 98%;"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">
+                          Catalogue
+                        </th>
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <span class="mr-2">100%</span>
+                            <div>
+                              <div class="progress">
+                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">
+                          Intranet
+                        </th>
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <span class="mr-2">45%</span>
+                            <div>
+                              <div class="progress">
+                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%;"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -237,22 +232,3 @@
       </div>
     </div>
   </div>
-  <!--   Core   -->
-  <script src="<?php echo base_url(); ?>assets/js/plugins/jquery/dist/jquery.min.js"></script>
-  <script src="<?php echo base_url(); ?>assets/js/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <!--   Optional JS   -->
-  <script src="<?php echo base_url(); ?>assets/js/plugins/chart.js/dist/Chart.min.js"></script>
-  <script src="<?php echo base_url(); ?>assets/js/plugins/chart.js/dist/Chart.extension.js"></script>
-  <!--   Argon JS   -->
-  <script src="<?php echo base_url(); ?>assets/js/argon-dashboard.min.js?v=1.1.2"></script>
-  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
-  <script>
-    window.TrackJS &&
-      TrackJS.install({
-        token: "ee6fab19c5a04ac1a32a645abde4613a",
-        application: "argon-dashboard-free"
-      });
-  </script>
-</body>
-
-</html>
