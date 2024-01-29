@@ -46,4 +46,37 @@ class Main extends CI_Model
         $this->db->where("MONTH(pencapaian) = MONTH(CURDATE() - INTERVAL 1 MONTH) AND YEAR(pencapaian) = YEAR(CURDATE() - INTERVAL 1 MONTH)");
         return $this->db->count_all_results('project_list');
     }
+    public function KirimRequest()
+    {
+        $data = [
+            'nama_req' => $this->input->post('nama', true),
+            'email_req' => $this->input->post('email', true),
+            'dev_req' => $this->input->post('dev', true),
+            'butuh_req' => $this->input->post('butuh', true),
+            'link_req' => $this->input->post('link', true),
+            'desc_req' => $this->input->post('desc', true),
+            'status_req' => 0,
+        ];
+        $this->db->insert('request', $data);
+    }
+    public function EditProfil()
+    {
+        $data = [
+            'nama_user' => $this->input->post('nama', true),
+            'jenkel_user' => $this->input->post('gender', true),
+            'ttl' => $this->input->post('ttl', true),
+            'email_user' => $this->input->post('email', true),
+            'alamat' => $this->input->post('alamat', true),
+            'kota' => $this->input->post('kota', true),
+            'negara' => $this->input->post('negara', true),
+            'kode_pos' => $this->input->post('code_pos', true),
+            'tentang_user' => $this->input->post('ttg', true),
+            'status_online' => 0,
+        ];
+        $this->db->insert('user', $data);
+    }
+    public function Departemen()
+    {
+        return $this->db->get('departemen')->result();
+    }
 }

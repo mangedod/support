@@ -6,8 +6,8 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <!-- Brand -->
-      <a class="navbar-brand pt-0" href="<?= base_url(); ?>index.html">
-        <img src="<?= base_url(); ?>assets/img/brand/blue.png" class="navbar-brand-img" alt="...">
+      <a class="navbar-brand pt-0" href="<?php echo base_url('dashboard'); ?>">
+        <img src="<?php echo base_url(); ?>assets/img/brand/blue.png" class="navbar-brand-img" alt="...">
       </a>
       <!-- User -->
       <ul class="nav align-items-center d-md-none">
@@ -26,8 +26,8 @@
           <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <div class="media align-items-center">
               <span class="avatar avatar-sm rounded-circle">
-                <img alt="Image placeholder" src="<?= base_url(); ?>assets/img/theme/team-1-800x800.jpg
-">
+                <img alt="Image placeholder" src="<?php echo base_url('assets/img/theme/' . $user['gambar_user']);
+?>">
               </span>
             </div>
           </a>
@@ -35,24 +35,26 @@
             <div class=" dropdown-header noti-title">
               <h6 class="text-overflow m-0">Welcome!</h6>
             </div>
-            <a href="<?= base_url(); ?>examples/profile.html" class="dropdown-item">
+            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
               <i class="ni ni-single-02"></i>
               <span>My profile</span>
             </a>
-            <a href="<?= base_url(); ?>examples/profile.html" class="dropdown-item">
+            <?php if ($user['id'] == 1) {?>
+            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
               <i class="ni ni-settings-gear-65"></i>
               <span>Settings</span>
             </a>
-            <a href="<?= base_url(); ?>examples/profile.html" class="dropdown-item">
+            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
               <i class="ni ni-calendar-grid-58"></i>
               <span>Activity</span>
             </a>
-            <a href="<?= base_url(); ?>examples/profile.html" class="dropdown-item">
+            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
               <i class="ni ni-support-16"></i>
               <span>Support</span>
             </a>
+            <?php }?>
             <div class="dropdown-divider"></div>
-            <a href="<?= base_url('logout'); ?>" class="dropdown-item">
+            <a href="<?php echo base_url('logout'); ?>" class="dropdown-item">
               <i class="ni ni-user-run"></i>
               <span>Logout</span>
             </a>
@@ -65,8 +67,8 @@
         <div class="navbar-collapse-header d-md-none">
           <div class="row">
             <div class="col-6 collapse-brand">
-              <a href="<?= base_url(); ?>index.html">
-                <img src="<?= base_url(); ?>assets/img/brand/blue.png">
+              <a href="<?php echo base_url('dashboard'); ?>">
+                <img src="<?php echo base_url(); ?>assets/img/brand/blue.png">
               </a>
             </div>
             <div class="col-6 collapse-close">
@@ -90,41 +92,33 @@
         </form>
         <!-- Navigation -->
         <ul class="navbar-nav">
-          <li class="nav-item  active ">
-            <a class="nav-link  active " href="<?= base_url(); ?>index.html">
-              <i class="ni ni-tv-2 text-primary"></i> Dashboard
+          <?php
+$role_id = $this->session->userdata('role_id');
+$queryMenu = "SELECT `user_menu`.`id`, `menu`
+              FROM `user_menu` JOIN `user_access_menu`
+              ON `user_menu`.`id` = `user_access_menu`. `menu_id`
+              WHERE `user_access_menu`.`role_id` = $role_id
+              ORDER BY `user_access_menu`.`menu_id` ASC";
+$menu = $this->db->query($queryMenu)->result_array();
+?>
+    <?php foreach ($menu as $dod) {?>
+      <span class="text-secondary"><small><?=$dod['menu'];?></small></span>
+      <?php
+$menuId = $dod['id'];
+    $querySubMenu = "SELECT *
+        FROM `user_sub_menu` JOIN `user_menu`
+        ON `user_sub_menu`.`menu_id` = `user_menu`. `id`
+        WHERE `user_sub_menu`.`menu_id` = $menuId
+        AND `user_sub_menu`.`is_active` = 1";
+    $subMenu = $this->db->query($querySubMenu)->result_array();
+    ?>
+      <?php foreach ($subMenu as $sub) {?>
+          <li class="nav-item  <?php if ($judul == $sub['judul_menu']) {echo 'active';} else {echo '';}?> ">
+            <a class="nav-link" href="<?=base_url($sub['url']);?>">
+              <i class="<?=$sub['icon'];?> text-primary"></i> <?=$sub['judul_menu'];?>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link " href="<?= base_url(); ?>examples/icons.html">
-              <i class="ni ni-planet text-blue"></i> Icons
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link " href="<?= base_url(); ?>examples/maps.html">
-              <i class="ni ni-pin-3 text-orange"></i> Maps
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link " href="<?= base_url(); ?>examples/profile.html">
-              <i class="ni ni-single-02 text-yellow"></i> User profile
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link " href="<?= base_url(); ?>examples/tables.html">
-              <i class="ni ni-bullet-list-67 text-red"></i> Tables
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<?= base_url(); ?>examples/login.html">
-              <i class="ni ni-key-25 text-info"></i> Login
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<?= base_url(); ?>examples/register.html">
-              <i class="ni ni-circle-08 text-pink"></i> Register
-            </a>
-          </li>
+          <?php }}?>
         </ul>
       </div>
     </div>
@@ -134,9 +128,9 @@
     <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
       <div class="container-fluid">
         <!-- Brand -->
-        <a class="h4 mb-0 text-white d-none d-lg-inline-block" href="<?= base_url(); ?>index.html"><?= $greeting . ' ' . $user['nama_user']; ?></a>
+        <a class="h4 mb-0 text-white d-none d-lg-inline-block" href="<?php echo base_url(); ?>"><?php echo $greeting . ' ' . $user['nama_user']; ?></a>
         <!-- Form -->
-        <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+        <!-- <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
           <div class="form-group mb-0">
             <div class="input-group input-group-alternative">
               <div class="input-group-prepend">
@@ -145,17 +139,17 @@
               <input class="form-control" placeholder="Search" type="text">
             </div>
           </div>
-        </form>
+        </form> -->
         <!-- User -->
         <ul class="navbar-nav align-items-center d-none d-md-flex">
           <li class="nav-item dropdown">
             <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="media align-items-center">
                 <span class="avatar avatar-sm rounded-circle">
-                  <img alt="Image placeholder" src="<?= base_url('assets/img/theme/' . $user['gambar_user']); ?>">
+                  <img alt="Image placeholder" src="<?php echo base_url('assets/img/theme/' . $user['gambar_user']); ?>">
                 </span>
                 <div class="media-body ml-2 d-none d-lg-block">
-                  <span class="mb-0 text-sm  font-weight-bold"><?= $user['nama_user']; ?></span>
+                  <span class="mb-0 text-sm  font-weight-bold"><?php echo $user['nama_user']; ?></span>
                 </div>
               </div>
             </a>
@@ -163,24 +157,26 @@
               <div class=" dropdown-header noti-title">
                 <h6 class="text-overflow m-0">Welcome!</h6>
               </div>
-              <a href="<?= base_url(); ?>examples/profile.html" class="dropdown-item">
+              <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
                 <i class="ni ni-single-02"></i>
                 <span>My profile</span>
               </a>
-              <a href="<?= base_url(); ?>examples/profile.html" class="dropdown-item">
-                <i class="ni ni-settings-gear-65"></i>
-                <span>Settings</span>
-              </a>
-              <a href="<?= base_url(); ?>examples/profile.html" class="dropdown-item">
-                <i class="ni ni-calendar-grid-58"></i>
-                <span>Activity</span>
-              </a>
-              <a href="<?= base_url(); ?>examples/profile.html" class="dropdown-item">
-                <i class="ni ni-support-16"></i>
-                <span>Support</span>
-              </a>
+              <?php if ($user['id'] == 1) {?>
+            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
+              <i class="ni ni-settings-gear-65"></i>
+              <span>Settings</span>
+            </a>
+            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
+              <i class="ni ni-calendar-grid-58"></i>
+              <span>Activity</span>
+            </a>
+            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
+              <i class="ni ni-support-16"></i>
+              <span>Support</span>
+            </a>
+            <?php }?>
               <div class="dropdown-divider"></div>
-              <a href="<?= base_url('logout'); ?>" class="dropdown-item">
+              <a href="<?php echo base_url('logout'); ?>" class="dropdown-item">
                 <i class="ni ni-user-run"></i>
                 <span>Logout</span>
               </a>

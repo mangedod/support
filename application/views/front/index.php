@@ -5,7 +5,7 @@
     <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
       <div class="container-fluid">
         <!-- Brand -->
-        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="<?php echo base_url(); ?>"><?=$judul;?></a>
+        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/img/brand/white.png" width="100px" class="navbar-brand-img" alt="..."></a>
         <ul class="navbar-nav align-items-center d-none d-md-flex">
         </ul>
       </div>
@@ -25,10 +25,16 @@
                 </div>
               </div>
             </div>
+            <div class="m-3">
+              <?php if ($this->session->flashdata('pesan')) {?>
+                <?php echo $this->session->flashdata('pesan'); ?>
+                <?php $this->session->unset_userdata('pesan');?>
+              <?php }?>
+            </div>
             <div class="card-body">
               <!-- Chart -->
               <div class="pb-3">
-                <form role="form">
+                <form role="form" method="post" action="<?php echo base_url('id/index'); ?>">
                   <div class="row">
                     <div class="col-lg-4 col-12">
                       <div class="form-group">
@@ -36,7 +42,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
                           </div>
-                          <input class="form-control text-dark" placeholder="Nama" type="text">
+                          <input class="form-control text-dark" placeholder="Nama" type="text" id="nama" name="nama">
                         </div>
                       </div>
                     </div>
@@ -44,9 +50,9 @@
                       <div class="form-group">
                         <div class="input-group input-group-alternative mb-3">
                           <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                            <span class="input-group-text"><i class="bi bi-envelope-at"></i></span>
                           </div>
-                          <input class="form-control text-dark" placeholder="Email" type="email">
+                          <input class="form-control text-dark" placeholder="Email" type="email" id="email" name="email">
                         </div>
                       </div>
                     </div>
@@ -56,13 +62,11 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="bi bi-buildings-fill"></i></span>
                           </div>
-                          <select class="form-control text-dark" name="" id="">
+                          <select class="form-control text-dark" name="dev" id="dev">
                             <option value="" selected disabled>Departemen</option>
-                            <option value="">Departemen MD</option>
-                            <option value="">Departemen Marcom</option>
-                            <option value="">Departemen SC</option>
-                            <option value="">Departemen Warehouse</option>
-                            <option value="">Departemen QMS</option>
+                            <?php foreach ($dev as $d) {?>
+                            <option value="<?=$d->nama_dev;?>"><?=$d->nama_dev;?></option>
+                            <?php }?>
                           </select>
                         </div>
                       </div>
@@ -73,11 +77,11 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="bi bi-browser-chrome"></i></span>
                           </div>
-                          <select class="form-control text-dark" name="" id="">
+                          <select class="form-control text-dark" name="butuh" id="butuh">
                             <option value="" selected disabled>Kebutuhan</option>
-                            <option value="">Website Baru</option>
-                            <option value="">Aplikasi Baru</option>
-                            <option class="text-success" value="">Maintenance</option>
+                            <option value="Web Baru">Website Baru</option>
+                            <option value="App Baru">Aplikasi Baru</option>
+                            <option class="text-success" value="Maintenance">Maintenance</option>
                           </select>
                         </div>
                       </div>
@@ -88,16 +92,16 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="bi bi-browser-chrome"></i></span>
                           </div>
-                          <input class="form-control text-dark" placeholder="URL/Link Contoh (opsional)" type="text">
+                          <input class="form-control text-dark" placeholder="URL/Link Contoh (opsional)" type="text" id="link" name="link">
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="form-floating">
-                    <textarea class="form-control text-dark" placeholder="Ceritakan seperti apa kebutuhan Anda" id="floatingTextarea2" style="height: 100px"></textarea>
+                    <textarea class="form-control text-dark" placeholder="Ceritakan seperti apa kebutuhan Anda" style="height: 100px" id="desc" name="desc"></textarea>
                   </div>
                   <div class="text-center">
-                    <button type="button" class="btn btn-primary mt-4">Kirim Request</button>
+                    <button type="submit" class="btn btn-primary mt-4">Kirim Request</button>
                   </div>
                 </form>
               </div>
