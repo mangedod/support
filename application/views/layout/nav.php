@@ -27,7 +27,7 @@
             <div class="media align-items-center">
               <span class="avatar avatar-sm rounded-circle">
                 <img alt="Image placeholder" src="<?php echo base_url('assets/img/theme/' . $user['gambar_user']);
-?>">
+                                                  ?>">
               </span>
             </div>
           </a>
@@ -39,20 +39,20 @@
               <i class="ni ni-single-02"></i>
               <span>My profile</span>
             </a>
-            <?php if ($user['id'] == 1) {?>
-            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
-              <i class="ni ni-settings-gear-65"></i>
-              <span>Settings</span>
-            </a>
-            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
-              <i class="ni ni-calendar-grid-58"></i>
-              <span>Activity</span>
-            </a>
-            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
-              <i class="ni ni-support-16"></i>
-              <span>Support</span>
-            </a>
-            <?php }?>
+            <?php if ($user['id'] == 1) { ?>
+              <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
+                <i class="ni ni-settings-gear-65"></i>
+                <span>Settings</span>
+              </a>
+              <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
+                <i class="ni ni-calendar-grid-58"></i>
+                <span>Activity</span>
+              </a>
+              <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
+                <i class="ni ni-support-16"></i>
+                <span>Support</span>
+              </a>
+            <?php } ?>
             <div class="dropdown-divider"></div>
             <a href="<?php echo base_url('logout'); ?>" class="dropdown-item">
               <i class="ni ni-user-run"></i>
@@ -93,32 +93,37 @@
         <!-- Navigation -->
         <ul class="navbar-nav">
           <?php
-$role_id = $this->session->userdata('role_id');
-$queryMenu = "SELECT `user_menu`.`id`, `menu`
+          $role_id = $this->session->userdata('role_id');
+          $queryMenu = "SELECT `user_menu`.`id`, `menu`
               FROM `user_menu` JOIN `user_access_menu`
               ON `user_menu`.`id` = `user_access_menu`. `menu_id`
               WHERE `user_access_menu`.`role_id` = $role_id
               ORDER BY `user_access_menu`.`menu_id` ASC";
-$menu = $this->db->query($queryMenu)->result_array();
-?>
-    <?php foreach ($menu as $dod) {?>
-      <span class="text-secondary"><small><?=$dod['menu'];?></small></span>
-      <?php
-$menuId = $dod['id'];
-    $querySubMenu = "SELECT *
+          $menu = $this->db->query($queryMenu)->result_array();
+          ?>
+          <?php foreach ($menu as $dod) { ?>
+            <span class="text-secondary"><small><?= $dod['menu']; ?></small></span>
+            <?php
+            $menuId = $dod['id'];
+            $querySubMenu = "SELECT *
         FROM `user_sub_menu` JOIN `user_menu`
         ON `user_sub_menu`.`menu_id` = `user_menu`. `id`
         WHERE `user_sub_menu`.`menu_id` = $menuId
         AND `user_sub_menu`.`is_active` = 1";
-    $subMenu = $this->db->query($querySubMenu)->result_array();
-    ?>
-      <?php foreach ($subMenu as $sub) {?>
-          <li class="nav-item  <?php if ($judul == $sub['judul_menu']) {echo 'active';} else {echo '';}?> ">
-            <a class="nav-link" href="<?=base_url($sub['url']);?>">
-              <i class="<?=$sub['icon'];?> text-primary"></i> <?=$sub['judul_menu'];?>
-            </a>
-          </li>
-          <?php }}?>
+            $subMenu = $this->db->query($querySubMenu)->result_array();
+            ?>
+            <?php foreach ($subMenu as $sub) { ?>
+              <li class="nav-item  <?php if ($judul == $sub['judul_menu']) {
+                                      echo 'active';
+                                    } else {
+                                      echo '';
+                                    } ?> ">
+                <a class="nav-link" href="<?= base_url($sub['url']); ?>">
+                  <i class="<?= $sub['icon']; ?> text-primary"></i> <?= $sub['judul_menu']; ?>
+                </a>
+              </li>
+          <?php }
+          } ?>
         </ul>
       </div>
     </div>
@@ -129,17 +134,6 @@ $menuId = $dod['id'];
       <div class="container-fluid">
         <!-- Brand -->
         <a class="h4 mb-0 text-white d-none d-lg-inline-block" href="<?php echo base_url(); ?>"><?php echo $greeting . ' ' . $user['nama_user']; ?></a>
-        <!-- Form -->
-        <!-- <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-          <div class="form-group mb-0">
-            <div class="input-group input-group-alternative">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-search"></i></span>
-              </div>
-              <input class="form-control" placeholder="Search" type="text">
-            </div>
-          </div>
-        </form> -->
         <!-- User -->
         <ul class="navbar-nav align-items-center d-none d-md-flex">
           <li class="nav-item dropdown">
@@ -161,20 +155,20 @@ $menuId = $dod['id'];
                 <i class="ni ni-single-02"></i>
                 <span>My profile</span>
               </a>
-              <?php if ($user['id'] == 1) {?>
-            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
-              <i class="ni ni-settings-gear-65"></i>
-              <span>Settings</span>
-            </a>
-            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
-              <i class="ni ni-calendar-grid-58"></i>
-              <span>Activity</span>
-            </a>
-            <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
-              <i class="ni ni-support-16"></i>
-              <span>Support</span>
-            </a>
-            <?php }?>
+              <?php if ($user['id'] == 1) { ?>
+                <a href="<?php echo base_url('settings/'); ?>" class="dropdown-item">
+                  <i class="ni ni-settings-gear-65"></i>
+                  <span>Settings</span>
+                </a>
+                <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
+                  <i class="ni ni-calendar-grid-58"></i>
+                  <span>Activity</span>
+                </a>
+                <a href="<?php echo base_url('profile/'); ?>" class="dropdown-item">
+                  <i class="ni ni-support-16"></i>
+                  <span>Support</span>
+                </a>
+              <?php } ?>
               <div class="dropdown-divider"></div>
               <a href="<?php echo base_url('logout'); ?>" class="dropdown-item">
                 <i class="ni ni-user-run"></i>
