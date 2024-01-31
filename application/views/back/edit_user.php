@@ -14,7 +14,7 @@ echo $satu_kata;?></h1>
                 <?php echo $this->session->flashdata('pesan'); ?>
                 <?php $this->session->unset_userdata('pesan');?>
               <?php }?>
-            <a href="#" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">Edit Photo</a>
+            <a href="#" class="btn btn-info" data-toggle="modal" data-target="#EditFoto<?=$user['id'];?>">Edit Photo</a>
           </div>
         </div>
       </div>
@@ -51,10 +51,10 @@ echo $satu_kata;?></h1>
                       <span class="heading">10</span>
                       <span class="description">Selesai</span>
                     </div>
-                    <!-- <div>
+                    <div>
                       <span class="heading">89</span>
-                      <span class="description">Comments</span>
-                    </div> -->
+                      <span class="description">Koreksi</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -115,11 +115,11 @@ $usia = date_diff(date_create($tanggal_lahir), date_create($tanggal_sekarang))->
                 <select name="gender" id="gender" class="form-control">
                   <option value="<?=$user['jenkel_user'];?>">
                   <?php if ($user['jenkel_user'] == "L") {
-                      echo "Laki-laki";
-                  } else {
-                      echo "Perempuan";
-                  }
-                  ?>
+    echo "Laki-laki";
+} elseif ($user['jenkel_user'] == "P") {
+    echo "Perempuan";
+}
+?>
                               </option>
                           <option value="L">Laki-laki</option>
                           <option value="P">Perempuan</option>
@@ -184,6 +184,7 @@ $usia = date_diff(date_create($tanggal_lahir), date_create($tanggal_sekarang))->
                     <textarea rows="4" class="form-control form-control-alternative" id="ttg" name="ttg" placeholder="A few words about you ..."><?=$user['tentang_user'];?></textarea>
                   </div>
                 </div>
+                </div>
               </form>
             </div>
           </div>
@@ -194,7 +195,7 @@ $usia = date_diff(date_create($tanggal_lahir), date_create($tanggal_sekarang))->
 
 
   <!-- Edit Photo -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="EditFoto<?=$user['id'];?>" tabindex="-1" role="dialog" aria-labelledby="EditFoto<?=$user['id'];?>Title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -203,15 +204,19 @@ $usia = date_diff(date_create($tanggal_lahir), date_create($tanggal_sekarang))->
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <form action="<?=base_url('is/editProfil')?>" method="post" enctype="multipart/form-data">
       <div class="modal-body">
         <div class="form-group">
           <img class="rounded" src="<?php echo base_url('assets/img/theme/' . $user['gambar_user']); ?>" width="100%">
-          <input type="file" id="input-email" class="form-control form-control-alternative" value="<?=$user['gambar_user'];?>">
+          <input type="hidden" id="nama" name="nama" value="<?=$user['nama_user'];?>">
+          <input type="hidden" id="email" name="email" value="<?=$user['email_user'];?>">
+          <input type="file" id="image" name="image" class="form-control form-control-alternative" value="<?=$user['gambar_user'];?>">
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary bbtn-sm">Simpan</button>
+        <button type="submit" class="btn btn-primary bbtn-sm">Simpan</button>
       </div>
+      </form>
     </div>
   </div>
 </div>

@@ -73,10 +73,20 @@ class Main extends CI_Model
             'tentang_user' => $this->input->post('ttg', true),
             'status_online' => 0,
         ];
-        $this->db->insert('user', $data);
+
+        $this->db->where('email_user', $this->session->userdata('email'));
+        $this->db->update('user', $data);
     }
+
     public function Departemen()
     {
         return $this->db->get('departemen')->result();
+    }
+    public function Menus()
+    {
+        $this->db->select('*');
+        $this->db->join('user_menu', 'user_menu.id = user_sub_menu.menu_id');
+
+        return $this->db->get('user_sub_menu')->result_array();
     }
 }
