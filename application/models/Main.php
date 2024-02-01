@@ -89,4 +89,15 @@ class Main extends CI_Model
 
         return $this->db->get('user_sub_menu')->result_array();
     }
+    public function Menus1($id)
+    {
+        $this->db->select('*');
+
+        return $this->db->get_where('user_sub_menu', ['id_sub' => $id])->row_array();
+    }
+    public function HapusSubMenu($id)
+    {
+        $this->db->where('id_sub', $id);
+        $this->db->delete('user_sub_menu');
+    }
 }
