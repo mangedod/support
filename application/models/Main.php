@@ -100,4 +100,8 @@ class Main extends CI_Model
         $this->db->where('id_sub', $id);
         $this->db->delete('user_sub_menu');
     }
+    public function Role()
+    {
+        return $this->db->get('role')->result_array();
+    }
 }

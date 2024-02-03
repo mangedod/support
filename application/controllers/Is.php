@@ -6,6 +6,7 @@ class Is extends My_Controller
     {
         parent::__construct();
     }
+
     public function index()
     {
         date_default_timezone_set('Asia/Jakarta');
@@ -202,7 +203,8 @@ class Is extends My_Controller
                 'icon' => $this->input->post('icon'),
                 'is_active' => $this->input->post('is_active'),
             ];
-            $this->db->insert('user_sub_menu', $data);
+            $this->db->where('id_sub', $id);
+            $this->db->update('user_sub_menu', $data);
             $this->session->set_flashdata('pesan', '<div class="alert alert-success text-center alert-dismissible fade show" role="alert">Menu berhasil diubah!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             redirect('is/menus');
         }
@@ -212,7 +214,6 @@ class Is extends My_Controller
     {
         $this->fungsi->HapusSubMenu($id);
         $this->session->set_flashdata('pesan', '<div class="alert alert-danger text-center alert-dismissible fade show" role="alert">Menu berhasil dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-
         redirect('is/menus');
     }
     public function settings()
@@ -237,5 +238,94 @@ class Is extends My_Controller
         $this->load->view('layout/nav');
         $this->load->view('back/settings');
         $this->load->view('layout/foot');
+    }
+    public function role()
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $time = date('H');
+        if ($time < '10') {
+            $greeting = 'Selamat pagi';
+        } elseif ($time >= '10' && $time < '17') {
+            $greeting = 'Selamat siang';
+        } elseif ($time >= '17' && $time < '18') {
+            $greeting = 'Selamat sore';
+        } elseif ($time >= '18' && $time < '24') {
+            $greeting = 'Selamat malam';
+        } else {
+            $greeting = 'Selamat pagi';
+        }
+        $data['greeting'] = $greeting;
+        $data['user'] = $this->db->get_where('user', ['email_user' => $this->session->userdata('email')])->row_array();
+        $data['role'] = $this->db->get('role')->result_array();
+        $data['judul'] = 'Role Access';
+        // $data['roles'] = $this->fungsi->Role();
+        $this->form_validation->set_rules('role', 'Role', 'trim');
+        if ($this->form_validation->run() == false) {
+            $this->load->view('layout/head', $data);
+            $this->load->view('layout/nav');
+            $this->load->view('back/role', $data);
+            $this->load->view('layout/foot');
+
+        } else {
+            $this->fungsi->TambahRole();
+            $this->session->set_flashdata('pesan', '<div class="alert alert-success text-center alert-dismissible fade show" role="alert">berhasil dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            redirect('is/role');
+        }
+    }
+    public function e_role($id)
+    {
+        $data['user'] = $this->db->get_where('user', ['email_user' => $this->session->userdata('email')])->row_array();
+        $data['namaweb'] = $this->fungsi->About();
+        $data['role1'] = $this->fungsi->Role1($id);
+        $data['judul'] = 'Ubah Menu';
+
+        $this->form_validation->set_rules('role', 'Role', 'trim');
+        if ($this->form_validation->run() == false) {
+            $this->load->view('layout/head', $data);
+            $this->load->view('layout/nav');
+            $this->load->view('back/ubah_role', $data);
+            $this->load->view('layout/foot');
+        } else {
+            $this->fungsi->UbahRole();
+            $this->session->set_flashdata('pesan', '<div class="alert alert-info text-center alert-dismissible fade show" role="alert">berhasil diubah!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            redirect('admin/role');
+        }
+    }
+
+    public function h_role($id)
+    {
+        $this->fungsi->HapusRole($id);
+        $this->session->set_flashdata('pesan', '<div class="alert alert-danger text-center alert-dismissible fade show" role="alert">berhasil dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        redirect('is/role');
+    }
+
+    public function akses($role_id)
+    {
+        $data['user'] = $this->db->get_where('user', ['email_user' => $this->session->userdata('email')])->row_array();
+        $data['role'] = $this->db->get_where('role', ['id' => $role_id])->row_array();
+        $data['menu'] = $this->db->get('user_menu')->result_array();
+
+        $data['judul'] = 'Role';
+        $this->load->view('layout/head', $data);
+        $this->load->view('layout/nav');
+        $this->load->view('back/aksesrole', $data);
+        $this->load->view('layout/foot');
+    }
+
+    public function changeAccess()
+    {
+        $menu_id = $this->input->post('menuId');
+        $role_id = $this->input->post('roleId');
+        $data = [
+            'role_id' => $role_id,
+            'menu_id' => $menu_id,
+        ];
+        $result = $this->db->get_where('user_access_menu', $data);
+        if ($result->num_rows() < 1) {
+            $this->db->insert('user_access_menu', $data);
+        } else {
+            $this->db->delete('user_access_menu', $data);
+        }
+        $this->session->set_flashdata('pesan', '<div class="alert alert-info text-center alert-dismissible fade show" role="alert">akses berhasil!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
     }
 }
