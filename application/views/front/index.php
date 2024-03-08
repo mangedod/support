@@ -154,6 +154,11 @@ if ($percentage < 30) {
                     </tbody>
                   </table>
                 </div>
+                <div>
+                  <a href="https://kantiss.com/ERP.exe" download target="_blank">
+                    <img src="<?=base_url('assets/img/ERP.ico')?>" alt="">
+                  </a>
+                </div>
               </div>
             </div>
           </div>
