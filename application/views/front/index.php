@@ -155,8 +155,8 @@ if ($percentage < 30) {
                   </table>
                 </div>
                 <div class="mt-3 text-center">
-                  <a href="https://kantiss.com/ERP.exe" download target="_blank">
-                    ERP Desktop <img src="<?=base_url('assets/img/ERP.ico')?>" alt="">
+                  ERP Desktop  <a href="https://kantiss.com/ERP.exe" download target="_blank">
+                    <img src="<?=base_url('assets/img/ERP.ico')?>" alt="">
                   </a>
                 </div>
               </div>
