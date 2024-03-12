@@ -28,6 +28,18 @@ class Main extends CI_Model
         // $this->db->where('project_main.id_promain>3');
         return $this->db->get();
     }
+    public function get_project_count5()
+    {
+        $this->db->select('project_main.id_promain, project_main.nama_promain, COUNT(project_list.id_prolist) as count_skill');
+        $this->db->from('project_main');
+        $this->db->join('project_list', 'project_main.id_promain = project_list.id_promain', 'left');
+        $this->db->where('project_list.status_prolist', 1);
+        $this->db->group_by('project_main.id_promain');
+        $this->db->order_by('RAND()');
+        $this->db->limit(5);
+        // $this->db->where('project_main.id_promain<4');
+        return $this->db->get();
+    }
     public function get_total_project_list($id_promain)
     {
         $this->db->where('id_promain', $id_promain);

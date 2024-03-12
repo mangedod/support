@@ -9,22 +9,22 @@ class Is extends My_Controller
 
     public function index()
     {
-        date_default_timezone_set('Asia/Jakarta');
-        $time = date('H');
-        if ($time < '10') {
-            $greeting = 'Selamat pagi';
-        } elseif ($time >= '10' && $time < '17') {
-            $greeting = 'Selamat siang';
-        } elseif ($time >= '17' && $time < '18') {
-            $greeting = 'Selamat sore';
-        } elseif ($time >= '18' && $time < '24') {
-            $greeting = 'Selamat malam';
-        } else {
-            $greeting = 'Selamat pagi';
-        }
-        $data['greeting'] = $greeting;
         $data['user'] = $this->db->get_where('user', ['email_user' => $this->session->userdata('email')])->row_array();
         $data['judul'] = "Dashboard";
+        $data['skill_counts'] = $this->fungsi->get_project_count5()->result();
+        foreach ($data['skill_counts'] as $skill_count) {
+            $total = $this->fungsi->get_total_project_list($skill_count->id_promain);
+            $skill_count->percentage = ($total > 0) ? ($skill_count->count_skill / $total) * 100 : 0;
+
+            // Hitung presentase last week
+            $last_week_count = $this->fungsi->get_last_week_count($skill_count->id_promain);
+            $skill_count->last_week_percentage = ($total > 0) ? ($last_week_count / $total) * 100 : 0;
+
+            // Hitung presentase last month
+            $last_month_count = $this->fungsi->get_last_month_count($skill_count->id_promain);
+            $skill_count->last_month_percentage = ($total > 0) ? ($last_month_count / $total) * 100 : 0;
+        }
+
         $this->load->view('layout/head', $data);
         $this->load->view('layout/nav');
         $this->load->view('back/index');
@@ -32,20 +32,6 @@ class Is extends My_Controller
     }
     public function ubah_profil()
     {
-        date_default_timezone_set('Asia/Jakarta');
-        $time = date('H');
-        if ($time < '10') {
-            $greeting = 'Selamat pagi';
-        } elseif ($time >= '10' && $time < '17') {
-            $greeting = 'Selamat siang';
-        } elseif ($time >= '17' && $time < '18') {
-            $greeting = 'Selamat sore';
-        } elseif ($time >= '18' && $time < '24') {
-            $greeting = 'Selamat malam';
-        } else {
-            $greeting = 'Selamat pagi';
-        }
-        $data['greeting'] = $greeting;
         $data['user'] = $this->db->get_where('user', ['email_user' => $this->session->userdata('email')])->row_array();
         $data['judul'] = 'Edit Profil';
         $this->form_validation->set_rules('nama', 'Nama Lengkap', 'trim');
@@ -70,26 +56,12 @@ class Is extends My_Controller
     }
     public function editProfil()
     {
-        date_default_timezone_set('Asia/Jakarta');
-        $time = date('H');
-        if ($time < '10') {
-            $greeting = 'Selamat pagi';
-        } elseif ($time >= '10' && $time < '17') {
-            $greeting = 'Selamat siang';
-        } elseif ($time >= '17' && $time < '18') {
-            $greeting = 'Selamat sore';
-        } elseif ($time >= '18' && $time < '24') {
-            $greeting = 'Selamat malam';
-        } else {
-            $greeting = 'Selamat pagi';
-        }
-        $data['greeting'] = $greeting;
         $data['user'] = $this->db->get_where('user', ['email_user' => $this->session->userdata('email')])->row_array();
         $data['judul'] = 'Edit Profil';
         $this->form_validation->set_rules('image', 'Foto', 'trim');
         if ($this->form_validation->run() == false) {
             $this->load->view('layout/head', $data);
-            $this->load->view('layout/nav');
+            $this->load->view('layout/nav2');
             $this->load->view('back/edit_user');
             $this->load->view('layout/foot');
         } else {
@@ -129,20 +101,6 @@ class Is extends My_Controller
     }
     public function menus()
     {
-        date_default_timezone_set('Asia/Jakarta');
-        $time = date('H');
-        if ($time < '10') {
-            $greeting = 'Selamat pagi';
-        } elseif ($time >= '10' && $time < '17') {
-            $greeting = 'Selamat siang';
-        } elseif ($time >= '17' && $time < '18') {
-            $greeting = 'Selamat sore';
-        } elseif ($time >= '18' && $time < '24') {
-            $greeting = 'Selamat malam';
-        } else {
-            $greeting = 'Selamat pagi';
-        }
-        $data['greeting'] = $greeting;
         $data['user'] = $this->db->get_where('user', ['email_user' => $this->session->userdata('email')])->row_array();
         $data['menus'] = $this->fungsi->Menus();
         $data['judul'] = 'Menus';
@@ -169,20 +127,6 @@ class Is extends My_Controller
     }
     public function e_submenu($id)
     {
-        date_default_timezone_set('Asia/Jakarta');
-        $time = date('H');
-        if ($time < '10') {
-            $greeting = 'Selamat pagi';
-        } elseif ($time >= '10' && $time < '17') {
-            $greeting = 'Selamat siang';
-        } elseif ($time >= '17' && $time < '18') {
-            $greeting = 'Selamat sore';
-        } elseif ($time >= '18' && $time < '24') {
-            $greeting = 'Selamat malam';
-        } else {
-            $greeting = 'Selamat pagi';
-        }
-        $data['greeting'] = $greeting;
         $data['user'] = $this->db->get_where('user', ['email_user' => $this->session->userdata('email')])->row_array();
         $data['menu'] = $this->fungsi->Menus1($id);
         $data['menus'] = $this->fungsi->Menus();
@@ -218,20 +162,6 @@ class Is extends My_Controller
     }
     public function settings()
     {
-        date_default_timezone_set('Asia/Jakarta');
-        $time = date('H');
-        if ($time < '10') {
-            $greeting = 'Selamat pagi';
-        } elseif ($time >= '10' && $time < '17') {
-            $greeting = 'Selamat siang';
-        } elseif ($time >= '17' && $time < '18') {
-            $greeting = 'Selamat sore';
-        } elseif ($time >= '18' && $time < '24') {
-            $greeting = 'Selamat malam';
-        } else {
-            $greeting = 'Selamat pagi';
-        }
-        $data['greeting'] = $greeting;
         $data['user'] = $this->db->get_where('user', ['email_user' => $this->session->userdata('email')])->row_array();
         $data['judul'] = "Dashboard";
         $this->load->view('layout/head', $data);
@@ -241,20 +171,6 @@ class Is extends My_Controller
     }
     public function role()
     {
-        date_default_timezone_set('Asia/Jakarta');
-        $time = date('H');
-        if ($time < '10') {
-            $greeting = 'Selamat pagi';
-        } elseif ($time >= '10' && $time < '17') {
-            $greeting = 'Selamat siang';
-        } elseif ($time >= '17' && $time < '18') {
-            $greeting = 'Selamat sore';
-        } elseif ($time >= '18' && $time < '24') {
-            $greeting = 'Selamat malam';
-        } else {
-            $greeting = 'Selamat pagi';
-        }
-        $data['greeting'] = $greeting;
         $data['user'] = $this->db->get_where('user', ['email_user' => $this->session->userdata('email')])->row_array();
         $data['role'] = $this->db->get('role')->result_array();
         $data['judul'] = 'Role Access';
@@ -277,7 +193,7 @@ class Is extends My_Controller
         $data['user'] = $this->db->get_where('user', ['email_user' => $this->session->userdata('email')])->row_array();
         $data['namaweb'] = $this->fungsi->About();
         $data['role1'] = $this->fungsi->Role1($id);
-        $data['judul'] = 'Ubah Menu';
+        $data['judul'] = 'Role Access';
 
         $this->form_validation->set_rules('role', 'Role', 'trim');
         if ($this->form_validation->run() == false) {
@@ -305,7 +221,7 @@ class Is extends My_Controller
         $data['role'] = $this->db->get_where('role', ['id' => $role_id])->row_array();
         $data['menu'] = $this->db->get('user_menu')->result_array();
 
-        $data['judul'] = 'Role';
+        $data['judul'] = 'Role Access';
         $this->load->view('layout/head', $data);
         $this->load->view('layout/nav');
         $this->load->view('back/aksesrole', $data);
@@ -327,5 +243,24 @@ class Is extends My_Controller
             $this->db->delete('user_access_menu', $data);
         }
         $this->session->set_flashdata('pesan', '<div class="alert alert-info text-center alert-dismissible fade show" role="alert">akses berhasil!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+    }
+    public function jobdesk()
+    {
+        $data['user'] = $this->db->get_where('user', ['email_user' => $this->session->userdata('email')])->row_array();
+        $data['role'] = $this->db->get('role')->result_array();
+        $data['judul'] = 'Daily Job';
+        // $data['roles'] = $this->fungsi->Role();
+        $this->form_validation->set_rules('role', 'Role', 'trim');
+        if ($this->form_validation->run() == false) {
+            $this->load->view('layout/head', $data);
+            $this->load->view('layout/nav');
+            $this->load->view('back/job', $data);
+            $this->load->view('layout/foot');
+
+        } else {
+            $this->fungsi->TambahRole();
+            $this->session->set_flashdata('pesan', '<div class="alert alert-success text-center alert-dismissible fade show" role="alert">berhasil dihapus!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            redirect('is/role');
+        }
     }
 }

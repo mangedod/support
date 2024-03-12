@@ -9,7 +9,7 @@
             <h1 class="display-2 text-white">Hello <?php $kata_kata = explode(" ", $user['nama_user']);
 $satu_kata = $kata_kata[0];
 echo $satu_kata;?></h1>
-            <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
+            <p class="text-white mt-0 mb-5"><?=$user['tentang_user'];?></p>
             <?php if ($this->session->flashdata('pesan')) {?>
                 <?php echo $this->session->flashdata('pesan'); ?>
                 <?php $this->session->unset_userdata('pesan');?>

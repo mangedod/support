@@ -6,8 +6,8 @@ class Id extends CI_Controller
     public function index()
     {
         $data['judul'] = "IT Support";
-        $data['skill_counts'] = $this->fungsi->get_project_count()->result();
         $data['dev'] = $this->fungsi->Departemen();
+        $data['skill_counts'] = $this->fungsi->get_project_count()->result();
         foreach ($data['skill_counts'] as $skill_count) {
             $total = $this->fungsi->get_total_project_list($skill_count->id_promain);
             $skill_count->percentage = ($total > 0) ? ($skill_count->count_skill / $total) * 100 : 0;

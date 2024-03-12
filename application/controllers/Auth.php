@@ -36,6 +36,15 @@ class Auth extends CI_Controller
                     $this->session->set_userdata($data);
                     $this->db->where('email_user', $email);
                     $this->db->update('user', array('status_online' => 1));
+
+                    if (!empty($this->input->post('save_id'))) {
+                        setcookie("loginId", $email, time() + (10 * 365 * 24 * 60 * 60));
+                        setcookie("loginPass", $password, time() + (10 * 365 * 24 * 60 * 60));
+                    } else {
+                        setcookie("loginId", "");
+                        setcookie("loginPass", "");
+                    }
+
                     if ($user['role_id'] == 1) {
                         redirect('is');
                     } elseif ($user['role_id'] == 2) {

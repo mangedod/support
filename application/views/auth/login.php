@@ -68,7 +68,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Email" type="email" name="email" id="email" autofocus><br>
+                    <input class="form-control" placeholder="Email" type="email" name="email" id="email" value="<?php if (isset($_COOKIE["loginId"])) {echo $_COOKIE["loginId"];} else {echo set_value('email');}?>" autofocus><br>
                     <?=form_error('email', '<small class="text-danger pl-2">', '</small>');?>
                   </div>
                 </div>
@@ -77,13 +77,13 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Password" type="password" name="password" id="password">
+                    <input class="form-control" placeholder="Password" type="password" name="password" id="password" value="<?php if (isset($_COOKIE["loginPass"])) {echo $_COOKIE["loginPass"];}?>">
                     <?=form_error('password', '<small class="text-danger pl-2">', '</small>');?>
                   </div>
                 </div>
                 <div class="custom-control custom-control-alternative custom-checkbox">
-                  <input class="custom-control-input" id=" customCheckLogin" type="checkbox">
-                  <label class="custom-control-label" for=" customCheckLogin">
+                  <input class="custom-control-input" id="save_id" name="save_id" type="checkbox" <?php if (isset($_COOKIE["loginId"])) {echo "checked";}?>>
+                  <label class="custom-control-label" for="save_id">
                     <span class="text-muted">Remember me</span>
                   </label>
                 </div>
